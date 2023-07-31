@@ -1,7 +1,11 @@
 package first.app.e_tourisme.model;
 
+import android.util.Log;
+
 import java.util.Date;
 import java.util.Objects;
+
+import first.app.e_tourisme.tools.CallWebService;
 
 public class User {
     // Propriety
@@ -93,7 +97,8 @@ public class User {
     }
 
     public Boolean login(String username, String password) {
-        String url = "httpcs";
+        CallWebService webService = new CallWebService();
+        Object object = webService.responseWb("/user/allusers");
         if (Objects.equals(username, "admin") && Objects.equals(password, "admin")) return true;
         else return false;
     }
