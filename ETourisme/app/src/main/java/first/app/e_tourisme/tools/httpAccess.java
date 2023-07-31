@@ -22,6 +22,7 @@ public class httpAccess extends AsyncTask<String, Integer, Long> {
 
     private ArrayList<NameValuePair> parameters;
     private String responseReturn = null;
+    private AsyncResponse delegate = null;
 
 
     /**
@@ -67,6 +68,11 @@ public class httpAccess extends AsyncTask<String, Integer, Long> {
             Log.d("I/O error", "********" + e.toString());
         }
         return null;
+    }
+
+    @Override
+    protected void onPostExecute(Long result) {
+        delegate.processFinish((responseReturn.toString()));
     }
 
 }
