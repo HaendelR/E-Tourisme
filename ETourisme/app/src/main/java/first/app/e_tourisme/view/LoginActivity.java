@@ -39,6 +39,7 @@ public class LoginActivity extends AppCompatActivity {
         txtPassword = (EditText) findViewById(R.id.passwordLogin);
         errorLogin = (TextView) findViewById(R.id.errorLogin);
         listenLoginButton();
+        listenSigninButton();
     }
 
     /**
@@ -81,6 +82,15 @@ public class LoginActivity extends AppCompatActivity {
                 String passwordValue = txtPassword.getText().toString();
 
                 loginResult(usernameValue, passwordValue);
+            }
+        });
+    }
+
+    private void listenSigninButton() {
+        ((Button) findViewById(R.id.btnSignin)).setOnClickListener(new Button.OnClickListener() {
+            public void onClick(View v) {
+                Intent intent = new Intent(LoginActivity.this, SignInActivity.class);
+                startActivity(intent);
             }
         });
     }
