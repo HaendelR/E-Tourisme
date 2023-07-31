@@ -8,7 +8,7 @@ android {
 
     defaultConfig {
         applicationId "first.app.e_tourisme"
-        minSdk 22
+        minSdk 24
         targetSdk 33
         versionCode 1
         versionName "1.0"
@@ -29,6 +29,8 @@ android {
     buildFeatures {
         viewBinding true
     }
+    buildToolsVersion '23.0.1'
+    useLibrary 'org.apache.http.legacy'
 }
 
 dependencies {
@@ -39,6 +41,7 @@ dependencies {
     implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
     implementation 'androidx.lifecycle:lifecycle-livedata-ktx:2.4.1'
     implementation 'androidx.lifecycle:lifecycle-viewmodel-ktx:2.4.1'
+    implementation 'com.google.firebase:firebase-crashlytics-buildtools:2.8.1'
     testImplementation 'junit:junit:4.13.2'
     androidTestImplementation 'androidx.test.ext:junit:1.1.5'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.5.1'
