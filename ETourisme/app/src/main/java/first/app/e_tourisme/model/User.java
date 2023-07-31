@@ -93,6 +93,7 @@ public class User {
     }
 
     public Boolean login(String username, String password) {
+        String url = "httpcs";
         if (Objects.equals(username, "admin") && Objects.equals(password, "admin")) return true;
         else return false;
     }
