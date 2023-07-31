@@ -1,5 +1,6 @@
 package first.app.e_tourisme.view;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -50,6 +51,11 @@ public class LoginActivity extends AppCompatActivity {
         Log.d("method", "loginResult....");
         Boolean isLogin = this.userController.verifyLogin(username, password);
         if (!isLogin) errorLogin.setText("Nom d'utilisateur ou mot de passe incorrecte");
+        else {
+            errorLogin.setText("");
+            Intent intent = new Intent(LoginActivity.this, HomeActivity.class);
+            startActivity(intent);
+        }
     }
 
     /**
