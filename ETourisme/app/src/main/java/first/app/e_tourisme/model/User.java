@@ -1,7 +1,5 @@
 package first.app.e_tourisme.model;
 
-import android.util.Log;
-
 import java.util.Date;
 import java.util.Objects;
 

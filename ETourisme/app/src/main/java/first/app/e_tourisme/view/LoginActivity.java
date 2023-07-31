@@ -12,7 +12,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import first.app.e_tourisme.R;
 import first.app.e_tourisme.controller.UserController;
 
-public class MainActivity extends AppCompatActivity {
+public class LoginActivity extends AppCompatActivity {
 
     // Propriety login
     private EditText txtUsername;
@@ -25,7 +25,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle saveInstanceState) {
         super.onCreate(saveInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_login);
         initLogin();
         this.userController = UserController.getInstance();
     }
@@ -61,7 +61,7 @@ public class MainActivity extends AppCompatActivity {
                 /**
                  * Test Toast
                  */
-                //Toast.makeText(MainActivity.this,"Test",Toast.LENGTH_SHORT).show();
+                //Toast.makeText(LoginActivity.this,"Test",Toast.LENGTH_SHORT).show();
                 /**
                  * View message log
                  */
