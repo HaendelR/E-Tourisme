@@ -8,13 +8,15 @@ import com.loopj.android.http.AsyncHttpResponseHandler;
 import cz.msebera.android.httpclient.Header;
 
 public class CallWebService {
-    private String urlServer = "http://localhost:3000/";
+    private String urlServer = "http://localhost:3000";
     private Object object;
 
 
     public Object responseWb(String urlApi) {
         final Object[] object = {null};
-        new AsyncHttpClient().get(urlServer + urlApi, new AsyncHttpResponseHandler() {
+        String url = urlServer + urlApi;
+        Log.d("Url", url);
+        new AsyncHttpClient().get(url, new AsyncHttpResponseHandler() {
             @Override
             public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
                 String str = new String(responseBody);
