@@ -105,14 +105,16 @@ public class User {
         String url = "/user/login";
 
         RequestParams params = new RequestParams();
-        params.put("username", username);
-        params.put("password", password);
+        params.put("username", "default");
+        params.put("password", "default123");
 
+        final Object[] obh = {null};
         // To verify Modify
         webServiceCall.responsePost(url, params, new WebServiceCallback() {
             @Override
             public void onSuccess(String response) {
                 Log.d("WebService", "Response: " + response);
+                obh[0] = response;
             }
 
             @Override
@@ -121,6 +123,7 @@ public class User {
             }
         });
 
+        Log.d("test0", String.valueOf(obh[0]));
         return true;
     }
 }
