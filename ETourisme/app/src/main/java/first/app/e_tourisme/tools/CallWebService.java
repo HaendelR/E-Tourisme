@@ -33,7 +33,7 @@ public class CallWebService {
         return object;
     }
 
-    public void responsePost(String urlApi, RequestParams params, final WebServiceCallback callback) {
+    public boolean responsePost(String urlApi, RequestParams params, final WebServiceCallback callback) {
         String url = urlServer + urlApi;
         Log.d("Url", url);
         new AsyncHttpClient().post(url, params, new AsyncHttpResponseHandler() {
@@ -48,5 +48,6 @@ public class CallWebService {
                 callback.onFailure(statusCode);
             }
         });
+        return true;
     }
 }

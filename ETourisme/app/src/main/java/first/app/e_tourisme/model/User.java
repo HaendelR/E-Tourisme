@@ -5,7 +5,6 @@ import android.util.Log;
 import com.loopj.android.http.RequestParams;
 
 import java.util.Date;
-import java.util.Objects;
 
 import first.app.e_tourisme.tools.CallWebService;
 import first.app.e_tourisme.tools.WebServiceCallback;
@@ -20,8 +19,6 @@ public class User {
     private String email;
     private Integer contact;
     private Date birthDate;
-
-    private String responseRequest;
 
     public User(String name, String surname, String username, String genre, String address, String email, Integer contact, Date birthDate) {
         this.name = name;
@@ -101,12 +98,8 @@ public class User {
         this.birthDate = birthDate;
     }
 
-    public void setResponseRequest(String response) {
-        Log.d("Ato izy", response);
-        this.responseRequest = response;
-    }
 
-    public Boolean login(String username, String password) {
+    public boolean login(String username, String password) {
         CallWebService webServiceCall = new CallWebService();
 
         String url = "/user/login";
@@ -115,11 +108,10 @@ public class User {
         params.put("username", username);
         params.put("password", password);
 
-        webServiceCall.responsePost(url, params, new WebServiceCallback() {
+        return webServiceCall.responsePost(url, params, new WebServiceCallback() {
             @Override
             public void onSuccess(String response) {
                 Log.d("WebService", "Response: " + response);
-                setResponseRequest(response);
             }
 
             @Override
@@ -128,9 +120,6 @@ public class User {
             }
         });
 
-
-        if (Objects.equals(username, "admin") && Objects.equals(password, "admin")) return true;
-        else return false;
     }
 }
 
