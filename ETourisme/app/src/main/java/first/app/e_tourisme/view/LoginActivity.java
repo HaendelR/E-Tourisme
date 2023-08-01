@@ -94,7 +94,7 @@ public class LoginActivity extends AppCompatActivity {
     private void listenSigninButton() {
         ((Button) findViewById(R.id.btnSignin)).setOnClickListener(new Button.OnClickListener() {
             public void onClick(View v) {
-                Intent intent = new Intent(LoginActivity.this, SignInActivity.class);
+                Intent intent = new Intent(LoginActivity.this, SignInFragment1Activity.class);
                 startActivity(intent);
             }
         });
