@@ -6,7 +6,7 @@ import java.util.Date;
 
 public class UserTest extends TestCase {
     // create user
-    private User user = new User("user", "default", "admin", "M", "address", "default@gmail.com", 0315, new Date());
+    private User user = new User("user", "default", "admin", 1, "address", "default@gmail.com", 0315, new Date());
     private Boolean isLogin = true;
 
     public void testLogin() {

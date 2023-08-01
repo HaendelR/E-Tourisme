@@ -37,7 +37,7 @@ public class SignInFragment3Activity extends AppCompatActivity {
                 EditText dateSignIn = (EditText) findViewById(R.id.dateSignIn);
                 String dateValue = dateSignIn.getText().toString();
 
-                if (dateValue.length() == 0) {
+                if (dateValue.isEmpty()) {
                     Toast.makeText(SignInFragment3Activity.this, "Veuillez indiquer votre date de naissance", Toast.LENGTH_LONG).show();
                 } else {
                     Intent intent = new Intent(SignInFragment3Activity.this, SignInFragment4Activity.class);

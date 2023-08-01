@@ -9,15 +9,23 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 import first.app.e_tourisme.R;
+import first.app.e_tourisme.controller.UserController;
+import first.app.e_tourisme.model.User;
 
 public class SignInFragment5Activity extends AppCompatActivity {
+    private UserController userController;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sign_in_fragment5);
         listenHaveAccountButton();
+        this.userController = UserController.getInstance();
         Button btnFinish = findViewById(R.id.finishSignIn);
         btnFinish.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -29,9 +37,9 @@ public class SignInFragment5Activity extends AppCompatActivity {
                 EditText passwordConfirmSignIn = findViewById(R.id.passwordConfirmSignIn);
                 String passwordConfirmValue = passwordConfirmSignIn.getText().toString();
 
-                if (usernameValue.length() == 0) {
+                if (usernameValue.isEmpty()) {
                     Toast.makeText(SignInFragment5Activity.this, "Veuillez saisir votre identifiant", Toast.LENGTH_LONG).show();
-                } else if (passwordValue.length() == 0) {
+                } else if (passwordValue.isEmpty()) {
                     Toast.makeText(SignInFragment5Activity.this, "Veuillez saisir votre mot de passe", Toast.LENGTH_LONG).show();
                 } else if (!passwordValue.equals(passwordConfirmValue)) {
                     Toast.makeText(SignInFragment5Activity.this, "Les deux mots de passe ne sont pas identiques", Toast.LENGTH_LONG).show();
@@ -41,12 +49,27 @@ public class SignInFragment5Activity extends AppCompatActivity {
                     String surnameValue = getIntent().getStringExtra("SurnameValue");
                     Integer genderValue = Integer.valueOf(getIntent().getStringExtra("GenderValue"));
                     String dateValue = getIntent().getStringExtra("DateValue");
+                    String emailValue = getIntent().getStringExtra("EmailValue");
                     String adressValue = getIntent().getStringExtra("AdressValue");
                     Integer contactValue = Integer.valueOf(getIntent().getStringExtra("ContactValue"));
 
+                    // Format date
+                    SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+                    Date dateFormated = null;
+                    try {
+                        dateFormated = dateFormat.parse(dateValue);
+                    } catch (ParseException e) {
+                        throw new RuntimeException(e);
+                    }
+                    User userCreate = new User(nameValue, surnameValue, usernameValue, genderValue, adressValue, emailValue, contactValue, dateFormated);
+                    signInUserProcess(userCreate);
                 }
             }
         });
+    }
+
+    private void signInUserProcess(User user) {
+        this.userController.signInUser(user);
     }
 
     private void listenHaveAccountButton() {

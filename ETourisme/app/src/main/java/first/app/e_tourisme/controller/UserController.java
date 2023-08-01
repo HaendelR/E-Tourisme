@@ -35,4 +35,8 @@ public final class UserController {
         user.login(username, password, callBack);
     }
 
+    public void signInUser(User user) {
+        user.signIn(user);
+    }
+
 }

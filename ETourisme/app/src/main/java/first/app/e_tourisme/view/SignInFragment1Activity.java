@@ -27,7 +27,7 @@ public class SignInFragment1Activity extends AppCompatActivity {
                 EditText surnameSignIn = (EditText) findViewById(R.id.surnameSignIn);
                 String surnameValue = surnameSignIn.getText().toString();
 
-                if (nameValue.length() == 0 || surnameValue.length() == 0) {
+                if (nameValue.isEmpty() || surnameValue.isEmpty()) {
                     Toast.makeText(SignInFragment1Activity.this, "Veuillez remplir tous les champs ", Toast.LENGTH_LONG).show();
                 } else {
                     Intent intent = new Intent(SignInFragment1Activity.this, SignInFragment2Activity.class);

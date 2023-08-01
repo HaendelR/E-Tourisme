@@ -2,6 +2,7 @@ package first.app.e_tourisme.model;
 
 import android.util.Log;
 
+import com.google.gson.Gson;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.loopj.android.http.RequestParams;
@@ -11,20 +12,19 @@ import java.util.Date;
 import first.app.e_tourisme.tools.CallWebService;
 import first.app.e_tourisme.tools.LoginCallBack;
 import first.app.e_tourisme.tools.WebServiceCallback;
-import com.google.gson.Gson;
 
 public class User {
     // Propriety
     private String name;
     private String surname;
     private String username;
-    private String genre;
+    private Integer genre;
     private String address;
     private String email;
     private Integer contact;
     private Date birthDate;
 
-    public User(String name, String surname, String username, String genre, String address, String email, Integer contact, Date birthDate) {
+    public User(String name, String surname, String username, Integer genre, String address, String email, Integer contact, Date birthDate) {
         this.name = name;
         this.surname = surname;
         this.username = username;
@@ -62,11 +62,11 @@ public class User {
         this.username = username;
     }
 
-    public String getGenre() {
+    public Integer getGenre() {
         return genre;
     }
 
-    public void setGenre(String genre) {
+    public void setGenre(Integer genre) {
         this.genre = genre;
     }
 
@@ -102,6 +102,9 @@ public class User {
         this.birthDate = birthDate;
     }
 
+    public void signIn(User user) {
+
+    }
 
     public void login(String username, String password, LoginCallBack callback) {
         CallWebService webServiceCall = new CallWebService();
