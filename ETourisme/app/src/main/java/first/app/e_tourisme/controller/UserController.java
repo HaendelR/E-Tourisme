@@ -1,6 +1,7 @@
 package first.app.e_tourisme.controller;
 
 import first.app.e_tourisme.model.User;
+import first.app.e_tourisme.tools.LoginCallBack;
 
 // Final because we don't want another class to derive from it and create another instance
 public final class UserController {
@@ -29,9 +30,9 @@ public final class UserController {
      * @param password
      * @return true or false
      */
-    public Boolean verifyLogin(String username, String password) {
+    public void verifyLogin(String username, String password, LoginCallBack callBack) {
         User user = new User();
-        return user.login(username, password);
+        user.login(username, password, callBack);
     }
 
 }

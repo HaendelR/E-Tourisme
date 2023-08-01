@@ -2,12 +2,16 @@ package first.app.e_tourisme.model;
 
 import android.util.Log;
 
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
 import com.loopj.android.http.RequestParams;
 
 import java.util.Date;
 
 import first.app.e_tourisme.tools.CallWebService;
+import first.app.e_tourisme.tools.LoginCallBack;
 import first.app.e_tourisme.tools.WebServiceCallback;
+import com.google.gson.Gson;
 
 public class User {
     // Propriety
@@ -99,32 +103,39 @@ public class User {
     }
 
 
-    public boolean login(String username, String password) {
+    public void login(String username, String password, LoginCallBack callback) {
         CallWebService webServiceCall = new CallWebService();
-
         String url = "/user/login";
 
         RequestParams params = new RequestParams();
-        params.put("username", "default");
-        params.put("password", "default123");
+        params.put("username", username);
+        params.put("password", password);
 
-        final Object[] obh = {null};
-        // To verify Modify
         webServiceCall.responsePost(url, params, new WebServiceCallback() {
             @Override
             public void onSuccess(String response) {
-                Log.d("WebService", "Response: " + response);
-                obh[0] = response;
+                Gson gson = new Gson();
+                JsonElement jsonElement = gson.fromJson(response, JsonElement.class);
+                boolean success = false;
+                if (jsonElement != null && jsonElement.isJsonObject()) {
+                    JsonObject jsonObject = jsonElement.getAsJsonObject();
+
+                    if (jsonObject.has("token")) {
+                        String token = jsonObject.get("token").getAsString();
+                        Log.d("WebService", "Response: " + token);
+                        success = true;
+                    }
+                }
+                callback.onLoginResult(success);
             }
 
             @Override
             public void onFailure(int statusCode) {
                 Log.e("WebService", "Request failed with status code: " + statusCode);
+                callback.onLoginResult(false);
             }
         });
-
-        Log.d("test0", String.valueOf(obh[0]));
-        return true;
     }
+
 }
 
