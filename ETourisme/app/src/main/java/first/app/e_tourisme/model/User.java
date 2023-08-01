@@ -108,7 +108,8 @@ public class User {
         params.put("username", username);
         params.put("password", password);
 
-        return webServiceCall.responsePost(url, params, new WebServiceCallback() {
+        // To verify Modify
+        webServiceCall.responsePost(url, params, new WebServiceCallback() {
             @Override
             public void onSuccess(String response) {
                 Log.d("WebService", "Response: " + response);
@@ -120,6 +121,7 @@ public class User {
             }
         });
 
+        return true;
     }
 }
 

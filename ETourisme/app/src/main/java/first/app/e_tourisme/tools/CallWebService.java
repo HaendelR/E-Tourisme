@@ -33,10 +33,10 @@ public class CallWebService {
         return object;
     }
 
-    public boolean responsePost(String urlApi, RequestParams params, final WebServiceCallback callback) {
+    public void responsePost(String urlApi, RequestParams params, final WebServiceCallback callback) {
         String url = urlServer + urlApi;
         Log.d("Url", url);
-        new AsyncHttpClient().post(url, params, new AsyncHttpResponseHandler() {
+        new AsyncHttpClient().post("https://prod.creatorservice-backend.creatorservice.mg/users/login", params, new AsyncHttpResponseHandler() {
             @Override
             public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
                 String response = new String(responseBody);
@@ -48,6 +48,6 @@ public class CallWebService {
                 callback.onFailure(statusCode);
             }
         });
-        return true;
+
     }
 }

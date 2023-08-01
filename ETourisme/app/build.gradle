@@ -8,7 +8,7 @@ android {
 
     defaultConfig {
         applicationId "first.app.e_tourisme"
-        minSdk 22
+        minSdk 25
         targetSdk 33
         versionCode 1
         versionName "1.0"
