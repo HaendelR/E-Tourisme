@@ -1,0 +1,115 @@
+package first.app.e_tourisme.model;
+
+import com.google.gson.Gson;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import first.app.e_tourisme.tools.CallWebService;
+import first.app.e_tourisme.tools.ListeCallBack;
+import first.app.e_tourisme.tools.ResponseCallBack;
+import first.app.e_tourisme.tools.WebServiceCallback;
+
+public class TouristicSite {
+
+    private String id;
+    private String name;
+    private String description;
+    private Place place;
+
+    public TouristicSite() {
+    }
+
+    public TouristicSite(String id, String name, String description, Place place) {
+        this.id = id;
+        this.name = name;
+        this.description = description;
+        this.place = place;
+    }
+
+    public TouristicSite(String name, String description, Place place) {
+        this.name = name;
+        this.description = description;
+        this.place = place;
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public Place getPlace() {
+        return place;
+    }
+
+    public void setPlace(Place place) {
+        this.place = place;
+    }
+
+    @Override
+    public String toString()  {
+        return this.name + " " +this.place.getEntitled();
+    }
+
+    public void getListeSiteTouristique(ListeCallBack callback) {
+        CallWebService webServiceCall = new CallWebService();
+        String url = "/touristicSite/allTouristicSite";
+
+        webServiceCall.responseGet(url, null, new WebServiceCallback() {
+            @Override
+            public void onSuccess(String response) {
+                Gson gson = new Gson();
+                List<TouristicSite> listes = new ArrayList<>();
+
+                JsonArray reponses = gson.fromJson(response, JsonArray.class);
+                if(reponses != null) {
+                    for(JsonElement jsonElement : reponses) {
+                        if(jsonElement.isJsonObject()) {
+                            JsonObject jsonObject = jsonElement.getAsJsonObject();
+                            String id = jsonObject.get("_id").getAsString();
+                            String name = jsonObject.get("touristicSiteName").getAsString();
+                            String description = jsonObject.get("description").getAsString();
+                            JsonObject place = jsonObject.getAsJsonObject("placeName");
+                            String placeName = place.get("name").getAsString();
+
+                            Place placeSite = new Place(placeName);
+
+                            TouristicSite site = new TouristicSite(id, name, description, placeSite);
+                            listes.add(site);
+
+                        }
+                    }
+                }
+
+                callback.onListeResult(listes);
+            }
+
+            @Override
+            public void onFailure(int statusCode) {
+                callback.onListeResult(null);
+            }
+        });
+    }
+}

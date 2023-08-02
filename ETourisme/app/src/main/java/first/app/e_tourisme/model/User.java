@@ -10,12 +10,14 @@ import com.loopj.android.http.RequestParams;
 import java.util.Date;
 
 import first.app.e_tourisme.tools.CallWebService;
-import first.app.e_tourisme.tools.LoginCallBack;
+import first.app.e_tourisme.tools.ResponseCallBack;
 import first.app.e_tourisme.tools.SignInCallBack;
 import first.app.e_tourisme.tools.WebServiceCallback;
 
 public class User {
     // Propriety
+
+    private String id;
     private String name;
     private String surname;
     private String username;
@@ -27,7 +29,8 @@ public class User {
 
     private String password;
 
-    public User(String name, String surname, String username, Integer genre, String address, String email, Integer contact, Date birthDate) {
+    public User(String id, String name, String surname, String username, Integer genre, String address, String email, Integer contact, Date birthDate) {
+        this.id = id;
         this.name = name;
         this.surname = surname;
         this.username = username;
@@ -51,6 +54,14 @@ public class User {
     }
 
     public User() {
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
     }
 
     public String getPassword() {
@@ -164,7 +175,7 @@ public class User {
         });
     }
 
-    public void login(String username, String password, LoginCallBack callback) {
+    public void login(String username, String password, ResponseCallBack callback) {
         CallWebService webServiceCall = new CallWebService();
         String url = "/user/login";
 

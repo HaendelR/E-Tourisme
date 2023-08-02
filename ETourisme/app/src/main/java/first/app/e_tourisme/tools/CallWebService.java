@@ -21,8 +21,7 @@ public class CallWebService {
         this.authorizationHeader = null;
     }
 
-    public Object responseGet(String urlApi, RequestParams params) {
-        final Object[] object = {null};
+    public void responseGet(String urlApi, RequestParams params, final WebServiceCallback callback) {
         String url = urlServer + urlApi;
         Log.d("Url", url);
 
@@ -35,16 +34,14 @@ public class CallWebService {
             @Override
             public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
                 String str = new String(responseBody);
-                Log.d("Value of", str);
-                object[0] = responseBody;
+                callback.onSuccess(str);
             }
 
             @Override
             public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
-
+                callback.onFailure(statusCode);
             }
         });
-        return object;
     }
 
     public void responsePost(String urlApi, RequestParams params, final WebServiceCallback callback) {

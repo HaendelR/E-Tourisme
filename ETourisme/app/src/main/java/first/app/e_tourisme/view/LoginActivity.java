@@ -12,7 +12,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import first.app.e_tourisme.R;
 import first.app.e_tourisme.controller.UserController;
-import first.app.e_tourisme.tools.LoginCallBack;
+import first.app.e_tourisme.tools.ResponseCallBack;
 
 public class LoginActivity extends AppCompatActivity {
 
@@ -56,12 +56,12 @@ public class LoginActivity extends AppCompatActivity {
      * @param password
      */
     private void loginResult(String username, String password) {
-        this.userController.verifyLogin(username, password, new LoginCallBack() {
+        this.userController.verifyLogin(username, password, new ResponseCallBack() {
             @Override
             public void onLoginResult(boolean success) {
                 if (success) {
                     errorLogin.setText("");
-                    Intent intent = new Intent(LoginActivity.this, HomeActivity.class);
+                    Intent intent = new Intent(LoginActivity.this, ListeActivity.class);
                     startActivity(intent);
                 } else {
                     errorLogin.setText("Nom d'utilisateur ou mot de passe incorrecte");
