@@ -89,7 +89,7 @@ public class SignInFragment5Activity extends AppCompatActivity {
             public void onSignInResult(boolean success) {
                 if (success) {
                     Intent intent = new Intent(SignInFragment5Activity.this, LoginActivity.class);
-                    intent.putExtra("success", getIntent().getStringExtra("Enregistrement réussi "));
+                    intent.putExtra("success", "Enregistrement réussi ");
                     startActivity(intent);
                 } else {
                     errorSignIn.setText("Échec de l'enregistrement");
