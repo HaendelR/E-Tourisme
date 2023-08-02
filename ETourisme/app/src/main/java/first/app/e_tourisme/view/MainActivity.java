@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.view.MenuItem;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
@@ -52,6 +53,7 @@ public class MainActivity extends AppCompatActivity {
             if (id == R.id.nav_home) {
                 // Gérer l'action lors de la sélection de "Home"
                 switchFragment(new HomeFragment());
+                updateDrawerTitle(getString(R.string.nav_home));
             } else if (id == R.id.nav_gallery) {
                 // Gérer l'action lors de la sélection de "Gallery"
                 switchFragment(new GalleryFragment());
@@ -68,6 +70,14 @@ public class MainActivity extends AppCompatActivity {
         if (savedInstanceState == null) {
             switchFragment(new HomeFragment());
             navigationView.setCheckedItem(R.id.nav_home);
+            updateDrawerTitle(getString(R.string.nav_home));
+        }
+    }
+
+    private void updateDrawerTitle(String title) {
+        ActionBar actionBar = getSupportActionBar();
+        if (actionBar != null) {
+            actionBar.setTitle(title);
         }
     }
 
