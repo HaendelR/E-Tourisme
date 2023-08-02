@@ -17,9 +17,8 @@ import androidx.fragment.app.FragmentTransaction;
 import com.google.android.material.navigation.NavigationView;
 
 import first.app.e_tourisme.R;
-import first.app.e_tourisme.view.ui.gallery.GalleryFragment;
 import first.app.e_tourisme.view.ui.home.HomeFragment;
-import first.app.e_tourisme.view.ui.slideshow.SlideshowFragment;
+import first.app.e_tourisme.view.ui.settings.SettingsFragment;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -39,7 +38,6 @@ public class MainActivity extends AppCompatActivity {
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        // Afficher le bouton de navigation dans l'ActionBar
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setHomeButtonEnabled(true);
         toggle.setHomeAsUpIndicator(R.drawable.ic_nav_drawer);
@@ -51,26 +49,23 @@ public class MainActivity extends AppCompatActivity {
             int id = item.getItemId();
 
             if (id == R.id.nav_home) {
-                // Gérer l'action lors de la sélection de "Home"
                 switchFragment(new HomeFragment());
-                updateDrawerTitle(getString(R.string.nav_home));
-            } else if (id == R.id.nav_gallery) {
-                // Gérer l'action lors de la sélection de "Gallery"
-                switchFragment(new GalleryFragment());
-            } else if (id == R.id.nav_slideshow) {
-                // Gérer l'action lors de la sélection de "Slideshow"
-                switchFragment(new SlideshowFragment());
+                updateDrawerTitle(getString(R.string.menu_home));
+            } else if (id == R.id.nav_list) {
+                // switchFragment(new GalleryFragment());
+            } else if (id == R.id.nav_settings) {
+                switchFragment(new SettingsFragment());
+                updateDrawerTitle(getString(R.string.menu_settings));
             }
 
             drawer.closeDrawer(GravityCompat.START);
             return true;
         });
 
-        // Afficher le fragment par défaut au démarrage de l'application
         if (savedInstanceState == null) {
             switchFragment(new HomeFragment());
             navigationView.setCheckedItem(R.id.nav_home);
-            updateDrawerTitle(getString(R.string.nav_home));
+            updateDrawerTitle(getString(R.string.menu_home));
         }
     }
 
@@ -90,7 +85,6 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        // Gérer les événements du bouton de navigation dans l'ActionBar
         if (toggle.onOptionsItemSelected(item)) {
             return true;
         }
