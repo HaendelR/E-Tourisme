@@ -53,6 +53,8 @@ public class MainActivity extends AppCompatActivity {
                 updateDrawerTitle(getString(R.string.menu_home));
             } else if (id == R.id.nav_list) {
                 // switchFragment(new GalleryFragment());
+                //Intent intent = new Intent(this, GalleryActivity.class);
+                //    startActivity(intent);
             } else if (id == R.id.nav_settings) {
                 switchFragment(new SettingsFragment());
                 updateDrawerTitle(getString(R.string.menu_settings));
