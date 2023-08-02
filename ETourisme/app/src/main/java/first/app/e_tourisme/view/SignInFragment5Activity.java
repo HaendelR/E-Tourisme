@@ -13,6 +13,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Locale;
 
 import first.app.e_tourisme.R;
 import first.app.e_tourisme.controller.UserController;
@@ -58,13 +59,14 @@ public class SignInFragment5Activity extends AppCompatActivity {
                     Integer contactValue = Integer.valueOf(getIntent().getStringExtra("ContactValue"));
 
                     // Format date
-                    SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+                    SimpleDateFormat dateFormat = new SimpleDateFormat("EEE MMM dd HH:mm:ss z yyyy", Locale.US);
                     Date dateFormatted = null;
                     try {
                         dateFormatted = dateFormat.parse(dateValue);
                     } catch (ParseException e) {
                         throw new RuntimeException(e);
                     }
+
                     User userCreate = new User(nameValue, surnameValue, usernameValue, genderValue, adressValue, emailValue, contactValue, dateFormatted, passwordValue);
                     signInUserProcess(userCreate);
                 }
