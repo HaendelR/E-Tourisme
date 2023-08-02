@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -16,17 +17,20 @@ import java.util.Date;
 import first.app.e_tourisme.R;
 import first.app.e_tourisme.controller.UserController;
 import first.app.e_tourisme.model.User;
+import first.app.e_tourisme.tools.SignInCallBack;
 
 public class SignInFragment5Activity extends AppCompatActivity {
     private UserController userController;
+    private TextView errorSignIn;
+    private Button btnFinish;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sign_in_fragment5);
-        listenHaveAccountButton();
+        initSignIn();
         this.userController = UserController.getInstance();
-        Button btnFinish = findViewById(R.id.finishSignIn);
+
         btnFinish.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -55,21 +59,42 @@ public class SignInFragment5Activity extends AppCompatActivity {
 
                     // Format date
                     SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-                    Date dateFormated = null;
+                    Date dateFormatted = null;
                     try {
-                        dateFormated = dateFormat.parse(dateValue);
+                        dateFormatted = dateFormat.parse(dateValue);
                     } catch (ParseException e) {
                         throw new RuntimeException(e);
                     }
-                    User userCreate = new User(nameValue, surnameValue, usernameValue, genderValue, adressValue, emailValue, contactValue, dateFormated);
+                    User userCreate = new User(nameValue, surnameValue, usernameValue, genderValue, adressValue, emailValue, contactValue, dateFormatted, passwordValue);
                     signInUserProcess(userCreate);
                 }
             }
         });
     }
 
+    private void initSignIn() {
+        errorSignIn = (TextView) findViewById(R.id.errorSignIn);
+        btnFinish = findViewById(R.id.finishSignIn);
+        listenHaveAccountButton();
+
+    }
+
     private void signInUserProcess(User user) {
-        this.userController.signInUser(user);
+        this.userController.signInUser(user, new SignInCallBack() {
+
+            @Override
+
+            public void onSignInResult(boolean success) {
+                if (success) {
+                    Intent intent = new Intent(SignInFragment5Activity.this, LoginActivity.class);
+                    intent.putExtra("success", getIntent().getStringExtra("Enregistrement réussi "));
+                    startActivity(intent);
+                } else {
+                    errorSignIn.setText("Échec de l'enregistrement");
+                }
+            }
+
+        });
     }
 
     private void listenHaveAccountButton() {

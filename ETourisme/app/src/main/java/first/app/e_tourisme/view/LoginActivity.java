@@ -21,6 +21,7 @@ public class LoginActivity extends AppCompatActivity {
     private EditText txtPassword;
 
     private TextView errorLogin;
+    private TextView successSignIn;
     private UserController userController;
 
 
@@ -41,6 +42,11 @@ public class LoginActivity extends AppCompatActivity {
         errorLogin = (TextView) findViewById(R.id.errorLogin);
         listenLoginButton();
         listenSigninButton();
+        successSignIn = (TextView) findViewById(R.id.successSignIn);
+        String success = getIntent().getStringExtra("success");
+        if (success != null && !success.isEmpty()) {
+            successSignIn.setText(success);
+        }
     }
 
     /**

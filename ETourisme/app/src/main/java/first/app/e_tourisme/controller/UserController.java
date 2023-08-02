@@ -2,6 +2,7 @@ package first.app.e_tourisme.controller;
 
 import first.app.e_tourisme.model.User;
 import first.app.e_tourisme.tools.LoginCallBack;
+import first.app.e_tourisme.tools.SignInCallBack;
 
 // Final because we don't want another class to derive from it and create another instance
 public final class UserController {
@@ -35,8 +36,8 @@ public final class UserController {
         user.login(username, password, callBack);
     }
 
-    public void signInUser(User user) {
-        user.signIn(user);
+    public void signInUser(User user, SignInCallBack callBack) {
+        user.signIn(user, callBack);
     }
 
 }

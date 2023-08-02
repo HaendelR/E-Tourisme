@@ -11,6 +11,7 @@ import java.util.Date;
 
 import first.app.e_tourisme.tools.CallWebService;
 import first.app.e_tourisme.tools.LoginCallBack;
+import first.app.e_tourisme.tools.SignInCallBack;
 import first.app.e_tourisme.tools.WebServiceCallback;
 
 public class User {
@@ -18,24 +19,46 @@ public class User {
     private String name;
     private String surname;
     private String username;
-    private Integer genre;
+    private Integer gender;
     private String address;
     private String email;
     private Integer contact;
     private Date birthDate;
 
+    private String password;
+
     public User(String name, String surname, String username, Integer genre, String address, String email, Integer contact, Date birthDate) {
         this.name = name;
         this.surname = surname;
         this.username = username;
-        this.genre = genre;
+        this.gender = genre;
         this.address = address;
         this.email = email;
         this.contact = contact;
         this.birthDate = birthDate;
     }
 
+    public User(String name, String surname, String username, Integer gender, String address, String email, Integer contact, Date birthDate, String password) {
+        this.name = name;
+        this.surname = surname;
+        this.username = username;
+        this.gender = gender;
+        this.address = address;
+        this.email = email;
+        this.contact = contact;
+        this.birthDate = birthDate;
+        this.password = password;
+    }
+
     public User() {
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
     }
 
     public String getName() {
@@ -62,12 +85,12 @@ public class User {
         this.username = username;
     }
 
-    public Integer getGenre() {
-        return genre;
+    public Integer getGender() {
+        return gender;
     }
 
-    public void setGenre(Integer genre) {
-        this.genre = genre;
+    public void setGender(Integer gender) {
+        this.gender = gender;
     }
 
     public String getAddress() {
@@ -102,8 +125,43 @@ public class User {
         this.birthDate = birthDate;
     }
 
-    public void signIn(User user) {
+    public void signIn(User user, SignInCallBack callBack) {
+        CallWebService webServiceCall = new CallWebService();
+        String url = "/user/adduser";
 
+        RequestParams params = new RequestParams();
+        params.put("name", user.getName());
+        params.put("surname", user.getSurname());
+        params.put("gender", user.getGender());
+        params.put("birthDate", user.getBirthDate());
+        params.put("adress", user.getAddress());
+        params.put("email", user.getEmail());
+        params.put("contact", user.getContact());
+        params.put("username", user.getUsername());
+        params.put("password", user.getPassword());
+
+        webServiceCall.responsePost(url, params, new WebServiceCallback() {
+            @Override
+            public void onSuccess(String response) {
+                Gson gson = new Gson();
+                JsonElement jsonElement = gson.fromJson(response, JsonElement.class);
+                boolean success = false;
+                if (jsonElement != null && jsonElement.isJsonObject()) {
+                    JsonObject jsonObject = jsonElement.getAsJsonObject();
+
+                    if (jsonObject.has("user")) {
+                        success = true;
+                    }
+                }
+                callBack.onSignInResult(success);
+            }
+
+            @Override
+            public void onFailure(int statusCode) {
+                Log.e("WebService", "Request failed with status code: " + statusCode);
+                callBack.onSignInResult(false);
+            }
+        });
     }
 
     public void login(String username, String password, LoginCallBack callback) {
