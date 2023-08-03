@@ -32,4 +32,5 @@
     <string name="bonne_visite">Bonne visite</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="logout">Déconnexion</string>
 </resources>

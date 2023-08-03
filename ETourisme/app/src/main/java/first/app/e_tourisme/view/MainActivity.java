@@ -1,11 +1,14 @@
 package first.app.e_tourisme.view;
 
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.ActionBarDrawerToggle;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.GravityCompat;
@@ -55,11 +58,11 @@ public class MainActivity extends AppCompatActivity {
             } else if (id == R.id.nav_list) {
                 updateDrawerTitle(getString(R.string.menu_list_site));
                 switchFragment(new ListFragment());
-                /*Intent intent = new Intent(this, ListeActivity.class);
-                startActivity(intent);*/
             } else if (id == R.id.nav_settings) {
                 switchFragment(new SettingsFragment());
                 updateDrawerTitle(getString(R.string.menu_settings));
+            } else if (id == R.id.nav_logOut) {
+                showLogoutConfirmationDialog();
             }
 
             drawer.closeDrawer(GravityCompat.START);
@@ -72,6 +75,33 @@ public class MainActivity extends AppCompatActivity {
             updateDrawerTitle(getString(R.string.menu_home));
         }
     }
+
+
+    private void showLogoutConfirmationDialog() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("Déconnexion");
+        builder.setMessage("Voulez-vous vraiment vous déconnecter ?");
+        builder.setPositiveButton("Oui", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                traitLogOut();
+            }
+        });
+        builder.setNegativeButton("Non", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                // Dismiss the dialog (do nothing)
+                dialog.dismiss();
+            }
+        });
+        builder.create().show();
+    }
+
+    private void traitLogOut() {
+        Intent intent = new Intent(MainActivity.this, LoginActivity.class);
+        startActivity(intent);
+    }
+
 
     private void updateDrawerTitle(String title) {
         ActionBar actionBar = getSupportActionBar();
