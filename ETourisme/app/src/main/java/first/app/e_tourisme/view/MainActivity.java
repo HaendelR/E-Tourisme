@@ -18,6 +18,7 @@ import com.google.android.material.navigation.NavigationView;
 
 import first.app.e_tourisme.R;
 import first.app.e_tourisme.view.ui.home.HomeFragment;
+import first.app.e_tourisme.view.ui.listSite.ListFragment;
 import first.app.e_tourisme.view.ui.settings.SettingsFragment;
 
 public class MainActivity extends AppCompatActivity {
@@ -52,9 +53,10 @@ public class MainActivity extends AppCompatActivity {
                 switchFragment(new HomeFragment());
                 updateDrawerTitle(getString(R.string.menu_home));
             } else if (id == R.id.nav_list) {
-                // switchFragment(new GalleryFragment());
-                //Intent intent = new Intent(this, GalleryActivity.class);
-                //    startActivity(intent);
+                updateDrawerTitle(getString(R.string.menu_list_site));
+                switchFragment(new ListFragment());
+                /*Intent intent = new Intent(this, ListeActivity.class);
+                startActivity(intent);*/
             } else if (id == R.id.nav_settings) {
                 switchFragment(new SettingsFragment());
                 updateDrawerTitle(getString(R.string.menu_settings));

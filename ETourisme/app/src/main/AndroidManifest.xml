@@ -16,7 +16,7 @@
         <activity
             android:name=".view.ListeActivity"
             android:exported="false" />
-             <activity
+        <activity
             android:name=".view.LoadActivity"
             android:exported="false" />
         <activity
