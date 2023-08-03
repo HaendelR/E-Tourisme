@@ -61,10 +61,12 @@ public class LoginActivity extends AppCompatActivity {
             public void onLoginResult(boolean success) {
                 if (success) {
                     errorLogin.setText("");
-                    Intent intent = new Intent(LoginActivity.this, ListeActivity.class);
+                    Intent intent = new Intent(LoginActivity.this, LoadActivity.class);
                     startActivity(intent);
+                    setLoginButtonLoading(false);
                 } else {
                     errorLogin.setText("Nom d'utilisateur ou mot de passe incorrecte");
+                    setLoginButtonLoading(false);
                 }
             }
         });
@@ -76,6 +78,7 @@ public class LoginActivity extends AppCompatActivity {
     private void listenLoginButton() {
         ((Button) findViewById(R.id.btnLogin)).setOnClickListener(new Button.OnClickListener() {
             public void onClick(View v) {
+                setLoginButtonLoading(true);
                 /**
                  * Test Toast
                  */
@@ -96,6 +99,18 @@ public class LoginActivity extends AppCompatActivity {
             }
         });
     }
+
+    private void setLoginButtonLoading(boolean isLoading) {
+        Button loginButton = findViewById(R.id.btnLogin);
+        if (isLoading) {
+            loginButton.setText("Chargement...");
+            loginButton.setEnabled(false);
+        } else {
+            loginButton.setText("Se connecter");
+            loginButton.setEnabled(true);
+        }
+    }
+
 
     private void listenSigninButton() {
         ((Button) findViewById(R.id.btnSignin)).setOnClickListener(new Button.OnClickListener() {

@@ -17,7 +17,6 @@
             android:orientation="horizontal">
 
             <TextView
-                android:id="@+id/textView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
@@ -86,9 +85,19 @@
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_horizontal|center_vertical"
                         android:layout_weight="1"
+                        android:background="#2196F3"
                         android:gravity="center_horizontal|center_vertical"
                         android:minHeight="48dp"
                         android:text="Se connecter"
+                        android:textSize="16sp" />
+
+                    <TextView
+                        android:id="@+id/successSignIn"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:textAlignment="center"
+                        android:textColor="#00AF07"
                         android:textSize="16sp" />
 
                     <Button
@@ -96,6 +105,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
+                        android:background="#4CAF50"
                         android:minHeight="48dp"
                         android:text="S'inscrire"
                         android:textSize="16sp" />
@@ -111,15 +121,6 @@
                         android:textColor="#DC0404"
                         android:textSize="16sp" />
 
-                    <TextView
-                        android:id="@+id/successSignIn"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:textAlignment="center"
-                        android:textColor="#00AF07"
-                        android:textSize="16sp" />
-
                 </LinearLayout>
             </LinearLayout>
         </LinearLayout>
@@ -130,6 +131,6 @@
             android:layout_gravity="center_horizontal|center_vertical"
             android:layout_weight="1"
             android:gravity="center_horizontal|center_vertical"
-            android:orientation="horizontal"/>
+            android:orientation="horizontal" />
     </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>
