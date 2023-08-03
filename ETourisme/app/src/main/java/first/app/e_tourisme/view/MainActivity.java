@@ -2,6 +2,7 @@ package first.app.e_tourisme.view;
 
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.MenuItem;
 
@@ -20,19 +21,35 @@ import androidx.fragment.app.FragmentTransaction;
 import com.google.android.material.navigation.NavigationView;
 
 import first.app.e_tourisme.R;
+import first.app.e_tourisme.tools.Notifications;
 import first.app.e_tourisme.view.ui.home.HomeFragment;
 import first.app.e_tourisme.view.ui.listSite.ListFragment;
 import first.app.e_tourisme.view.ui.settings.SettingsFragment;
 
 public class MainActivity extends AppCompatActivity {
-
+    private static final String PREF_NOTIFY_LOGOUT_KEY = "notifyLogOut";
     private DrawerLayout drawer;
+    private String channel_id = "C01";
+
+    private Boolean notifyLogOut;
+    private String channel_name = "channel01";
+    private String channel_desc = "channel desc";
+
     private ActionBarDrawerToggle toggle;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+
+        SharedPreferences preferences = getSharedPreferences(getPackageName() + "_preferences", MODE_PRIVATE);
+        notifyLogOut = preferences.getBoolean(PREF_NOTIFY_LOGOUT_KEY, false);
+
+        if (notifyLogOut) {
+            Notifications.createNotificationChannel(this, channel_id, channel_name, channel_desc);
+        }
+
 
         drawer = findViewById(R.id.drawer_layout);
         toggle = new ActionBarDrawerToggle(this, drawer, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
@@ -62,7 +79,7 @@ public class MainActivity extends AppCompatActivity {
                 switchFragment(new SettingsFragment());
                 updateDrawerTitle(getString(R.string.menu_settings));
             } else if (id == R.id.nav_logOut) {
-                showLogoutConfirmationDialog();
+                showLogoutConfirmationDialog(notifyLogOut);
             }
 
             drawer.closeDrawer(GravityCompat.START);
@@ -76,15 +93,19 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    public void updateNotifyLogOut(boolean newValue) {
+        notifyLogOut = newValue;
+    }
 
-    private void showLogoutConfirmationDialog() {
+
+    private void showLogoutConfirmationDialog(Boolean notifyLogOut) {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle("Déconnexion");
         builder.setMessage("Voulez-vous vraiment vous déconnecter ?");
         builder.setPositiveButton("Oui", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                traitLogOut();
+                traitLogOut(notifyLogOut);
             }
         });
         builder.setNegativeButton("Non", new DialogInterface.OnClickListener() {
@@ -97,9 +118,12 @@ public class MainActivity extends AppCompatActivity {
         builder.create().show();
     }
 
-    private void traitLogOut() {
+    private void traitLogOut(Boolean notifyLogoutValue) {
         Intent intent = new Intent(MainActivity.this, LoginActivity.class);
         startActivity(intent);
+        if (notifyLogoutValue) {
+            Notifications.showNotification(MainActivity.this, channel_id, "Statut", "Vous êtes déconnecté", LoginActivity.class);
+        }
     }
 
 
@@ -133,4 +157,5 @@ public class MainActivity extends AppCompatActivity {
             super.onBackPressed();
         }
     }
+
 }
