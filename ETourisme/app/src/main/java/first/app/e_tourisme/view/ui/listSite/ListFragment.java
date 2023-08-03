@@ -6,6 +6,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import androidx.fragment.app.Fragment;
@@ -19,6 +20,8 @@ import first.app.e_tourisme.tools.CustomListAdapter;
 import first.app.e_tourisme.tools.ListeCallBack;
 
 public class ListFragment extends Fragment {
+    private ProgressBar loadingProgressBar;
+
     private ListView listeTouristic;
 
     private ListeController listeController;
@@ -41,9 +44,11 @@ public class ListFragment extends Fragment {
 
     private void initListe(View view) {
         listeTouristic = view.findViewById(R.id.listView);
+        loadingProgressBar = view.findViewById(R.id.progressBar);
     }
 
     private void getListTouristiques() {
+        loadingProgressBar.setVisibility(View.VISIBLE);
         this.listeController.getAllSites(new ListeCallBack() {
             @Override
             public void onListeResult(List<TouristicSite> sites) {
@@ -59,7 +64,9 @@ public class ListFragment extends Fragment {
                         Toast.makeText(requireActivity(), "Selected :" + " " + site, Toast.LENGTH_LONG).show();
                     }
                 });
+                loadingProgressBar.setVisibility(View.GONE);
             }
+
         });
     }
 }

@@ -1,26 +1,25 @@
 package first.app.e_tourisme.view;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
-import java.util.ArrayList;
+import androidx.appcompat.app.AppCompatActivity;
+
 import java.util.List;
 
 import first.app.e_tourisme.R;
 import first.app.e_tourisme.controller.ListeController;
-import first.app.e_tourisme.model.Place;
 import first.app.e_tourisme.model.TouristicSite;
 import first.app.e_tourisme.tools.CustomListAdapter;
 import first.app.e_tourisme.tools.ListeCallBack;
 
 public class ListeActivity extends AppCompatActivity {
 
-
+    private ProgressBar loadingProgressBar;
     private ListView listeTouristic;
 
     private ListeController listeController;
@@ -36,9 +35,11 @@ public class ListeActivity extends AppCompatActivity {
 
     private void initListe() {
         listeTouristic = (ListView) findViewById(R.id.listView);
+        loadingProgressBar = findViewById(R.id.progressBar);
     }
 
     private void getListTouristiques() {
+        loadingProgressBar.setVisibility(View.VISIBLE);
         this.listeController.getAllSites(new ListeCallBack() {
             @Override
             public void onListeResult(List<TouristicSite> sites) {
@@ -54,6 +55,7 @@ public class ListeActivity extends AppCompatActivity {
                         Toast.makeText(ListeActivity.this, "Selected :" + " " + site, Toast.LENGTH_LONG).show();
                     }
                 });
+                loadingProgressBar.setVisibility(View.GONE);
             }
         });
     }
