@@ -30,9 +30,6 @@
             android:label="@string/title_activity_main"
             android:theme="@style/Theme.ETourisme.NoActionBar" />
         <activity
-            android:name=".view.PreferenceActivity"
-            android:exported="false" />
-        <activity
             android:name=".view.SignInFragment5Activity"
             android:exported="false" />
         <activity

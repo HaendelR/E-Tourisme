@@ -21,7 +21,6 @@ public class SettingsFragment extends PreferenceFragmentCompat {
 
     @Override
     public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
-        getActivity().setTheme(R.style.settings);
         setPreferencesFromResource(R.xml.root_preferences, rootKey);
 
         // Retrieve current value of SwitchPreferenceCompat
