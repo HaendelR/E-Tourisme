@@ -13,6 +13,10 @@
             android:icon="@android:drawable/ic_menu_sort_by_size"
             android:title="@string/menu_list_site" />
         <item
+            android:id="@+id/nav_gallery"
+            android:icon="@android:drawable/ic_menu_gallery"
+            android:title="@string/menu_galerie" />
+        <item
             android:id="@+id/nav_settings"
             android:icon="@android:drawable/ic_menu_manage"
             android:title="@string/menu_settings" />

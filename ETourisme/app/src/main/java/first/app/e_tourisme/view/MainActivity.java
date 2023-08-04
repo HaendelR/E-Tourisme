@@ -4,7 +4,6 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.MenuItem;
 
 import androidx.annotation.NonNull;
@@ -23,6 +22,7 @@ import com.google.android.material.navigation.NavigationView;
 
 import first.app.e_tourisme.R;
 import first.app.e_tourisme.tools.Notifications;
+import first.app.e_tourisme.view.ui.gallery.GalleryFragment;
 import first.app.e_tourisme.view.ui.home.HomeFragment;
 import first.app.e_tourisme.view.ui.listSite.ListFragment;
 import first.app.e_tourisme.view.ui.settings.SettingsFragment;
@@ -76,6 +76,9 @@ public class MainActivity extends AppCompatActivity {
             } else if (id == R.id.nav_list) {
                 updateDrawerTitle(getString(R.string.menu_list_site));
                 switchFragment(new ListFragment());
+            } else if (id == R.id.nav_gallery) {
+                updateDrawerTitle(getString(R.string.menu_galerie));
+                switchFragment(new GalleryFragment());
             } else if (id == R.id.nav_settings) {
                 switchFragment(new SettingsFragment());
                 updateDrawerTitle(getString(R.string.menu_settings));
