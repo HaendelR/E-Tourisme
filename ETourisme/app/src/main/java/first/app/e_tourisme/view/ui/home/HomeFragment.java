@@ -1,10 +1,12 @@
 package first.app.e_tourisme.view.ui.home;
 
 import android.os.Bundle;
-import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+
+import androidx.fragment.app.Fragment;
+
 import first.app.e_tourisme.R;
 
 public class HomeFragment extends Fragment {
