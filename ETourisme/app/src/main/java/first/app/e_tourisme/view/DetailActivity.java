@@ -38,8 +38,7 @@ public class DetailActivity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == android.R.id.home) {
-            // Gérer le clic sur le bouton de retour ici
-            finish(); // Terminez l'activité actuelle pour revenir en arrière
+            finish();
             return true;
         }
         return super.onOptionsItemSelected(item);
