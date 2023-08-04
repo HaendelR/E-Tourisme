@@ -135,6 +135,10 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void switchFragment(Fragment fragment) {
+        if (fragment.isAdded() || fragment.isDetached()) {
+            return;
+        }
+
         FragmentManager fragmentManager = getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
         fragmentTransaction.replace(R.id.fragment_container, fragment);

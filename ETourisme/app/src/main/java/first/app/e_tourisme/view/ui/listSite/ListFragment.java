@@ -8,7 +8,6 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.ProgressBar;
-import android.widget.Toast;
 
 import androidx.fragment.app.Fragment;
 
@@ -54,25 +53,24 @@ public class ListFragment extends Fragment {
         this.listeController.getAllSites(new ListeCallBack() {
             @Override
             public void onListeResult(List<TouristicSite> sites) {
-                //List<TouristicSite> listeSite = getListTouristiques();
-                listeTouristic.setAdapter(new CustomListAdapter(requireActivity(), sites));
-
-                listeTouristic.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-
-                    @Override
-                    public void onItemClick(AdapterView<?> a, View v, int position, long id) {
-                        Object o = listeTouristic.getItemAtPosition(position);
-                        TouristicSite site = (TouristicSite) o;
-                        //Toast.makeText(requireActivity(), "Selected :" + " " + site, Toast.LENGTH_LONG).show();
-                        Intent intent = new Intent(requireActivity(), DetailActivity.class);
-                        intent.putExtra("siteTouristique", site); // Passer l'objet TouristicSite en tant que paramètre supplémentaire
-
-                        startActivity(intent);
-                    }
-                });
-                loadingProgressBar.setVisibility(View.GONE);
+                if (isAdded()) {
+                    listeTouristic.setAdapter(new CustomListAdapter(requireActivity(), sites));
+                    listeTouristic.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                        @Override
+                        public void onItemClick(AdapterView<?> a, View v, int position, long id) {
+                            if (isAdded()) {
+                                Object o = listeTouristic.getItemAtPosition(position);
+                                TouristicSite site = (TouristicSite) o;
+                                Intent intent = new Intent(requireActivity(), DetailActivity.class);
+                                intent.putExtra("siteTouristique", site);
+                                startActivity(intent);
+                            }
+                        }
+                    });
+                    loadingProgressBar.setVisibility(View.GONE);
+                }
             }
-
         });
     }
+
 }
