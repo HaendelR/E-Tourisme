@@ -1,5 +1,6 @@
 package first.app.e_tourisme.view.ui.listSite;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -18,6 +19,7 @@ import first.app.e_tourisme.controller.ListeController;
 import first.app.e_tourisme.model.TouristicSite;
 import first.app.e_tourisme.tools.CustomListAdapter;
 import first.app.e_tourisme.tools.ListeCallBack;
+import first.app.e_tourisme.view.DetailActivity;
 
 public class ListFragment extends Fragment {
     private ProgressBar loadingProgressBar;
@@ -61,7 +63,11 @@ public class ListFragment extends Fragment {
                     public void onItemClick(AdapterView<?> a, View v, int position, long id) {
                         Object o = listeTouristic.getItemAtPosition(position);
                         TouristicSite site = (TouristicSite) o;
-                        Toast.makeText(requireActivity(), "Selected :" + " " + site, Toast.LENGTH_LONG).show();
+                        //Toast.makeText(requireActivity(), "Selected :" + " " + site, Toast.LENGTH_LONG).show();
+                        Intent intent = new Intent(requireActivity(), DetailActivity.class);
+                        intent.putExtra("siteTouristique", site); // Passer l'objet TouristicSite en tant que paramètre supplémentaire
+
+                        startActivity(intent);
                     }
                 });
                 loadingProgressBar.setVisibility(View.GONE);

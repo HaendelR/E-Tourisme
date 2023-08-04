@@ -1,5 +1,8 @@
 package first.app.e_tourisme.model;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
@@ -13,7 +16,7 @@ import first.app.e_tourisme.tools.ListeCallBack;
 import first.app.e_tourisme.tools.ResponseCallBack;
 import first.app.e_tourisme.tools.WebServiceCallback;
 
-public class TouristicSite {
+public class TouristicSite implements Parcelable {
 
     private String id;
     private String name;
@@ -72,6 +75,38 @@ public class TouristicSite {
     public String toString()  {
         return this.name + " " +this.place.getEntitled();
     }
+
+    protected TouristicSite(Parcel in) {
+        id = in.readString();
+        name = in.readString();
+        description = in.readString();
+        place = in.readParcelable(Place.class.getClassLoader());
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(id);
+        dest.writeString(name);
+        dest.writeString(description);
+        dest.writeParcelable(place, flags);
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    public static final Creator<TouristicSite> CREATOR = new Creator<TouristicSite>() {
+        @Override
+        public TouristicSite createFromParcel(Parcel in) {
+            return new TouristicSite(in);
+        }
+
+        @Override
+        public TouristicSite[] newArray(int size) {
+            return new TouristicSite[size];
+        }
+    };
 
     public void getListeSiteTouristique(ListeCallBack callback) {
         CallWebService webServiceCall = new CallWebService();

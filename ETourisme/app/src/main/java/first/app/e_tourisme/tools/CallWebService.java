@@ -10,7 +10,7 @@ import cz.msebera.android.httpclient.Header;
 
 public class CallWebService {
 
-    private String urlServer = "https://0f5d-41-77-16-180.ngrok-free.app";
+    private String urlServer = "https://5b51-102-16-123-154.ngrok-free.app";
     private String authorizationHeader;
 
     public void setAuthorizationHeader(String token) {
