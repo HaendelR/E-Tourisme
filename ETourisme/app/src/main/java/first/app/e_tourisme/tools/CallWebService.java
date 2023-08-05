@@ -10,7 +10,7 @@ import cz.msebera.android.httpclient.Header;
 
 public class CallWebService {
 
-    private String urlServer = "https://3aec-41-77-17-11.ngrok-free.app";
+    private String urlServer = "https://7875-41-77-16-181.ngrok-free.app";
     private String authorizationHeader;
 
     public void setAuthorizationHeader(String token) {
@@ -26,6 +26,7 @@ public class CallWebService {
         Log.d("Url", url);
 
         AsyncHttpClient client = new AsyncHttpClient();
+        client.setResponseTimeout(120 * 1000); // 30 secondes
 
         if (authorizationHeader != null) {
             client.addHeader("Authorization", authorizationHeader);

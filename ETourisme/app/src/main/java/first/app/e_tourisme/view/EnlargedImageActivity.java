@@ -1,13 +1,17 @@
 package first.app.e_tourisme.view;
 
+import android.net.Uri;
 import android.os.Bundle;
 import android.widget.ImageView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import java.io.File;
+
 import first.app.e_tourisme.R;
 
 public class EnlargedImageActivity extends AppCompatActivity {
+    private File tempFile;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -17,12 +21,24 @@ public class EnlargedImageActivity extends AppCompatActivity {
         getSupportActionBar().setTitle("Photo");
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        ImageView imageView = findViewById(R.id.enlargedImageView);
-
-        // Récupérer l'ID de ressource de l'image agrandie depuis l'intent
-        int imageResId = getIntent().getIntExtra("imageResId", 0);
+        // Récupérer l'URI du fichier de l'image agrandie depuis l'intent
+        Uri imageUri = getIntent().getParcelableExtra("imageUri");
 
         // Afficher l'image agrandie
-        imageView.setImageResource(imageResId);
+        ImageView imageView = findViewById(R.id.enlargedImageView);
+        imageView.setImageURI(imageUri);
+
+        // Sauvegarder le fichier temporaire
+        tempFile = new File(imageUri.getPath());
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+
+        // Supprimer le fichier temporaire lorsque l'activité est détruite
+        if (tempFile != null && tempFile.exists()) {
+            tempFile.delete();
+        }
     }
 }
