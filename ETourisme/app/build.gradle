@@ -49,5 +49,7 @@ dependencies {
     implementation 'com.loopj.android:android-async-http:1.4.9'
     implementation 'com.google.code.gson:gson:2.8.9'
     implementation "androidx.viewpager2:viewpager2:1.0.0"
+    implementation 'org.webjars:bootstrap:5.1.0'
+
 
 }

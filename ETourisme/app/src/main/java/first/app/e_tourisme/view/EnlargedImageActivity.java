@@ -14,6 +14,9 @@ public class EnlargedImageActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_enlarged_image);
 
+        getSupportActionBar().setTitle("Photo");
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
         ImageView imageView = findViewById(R.id.enlargedImageView);
 
         // Récupérer l'ID de ressource de l'image agrandie depuis l'intent
