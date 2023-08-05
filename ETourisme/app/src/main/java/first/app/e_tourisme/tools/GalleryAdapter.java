@@ -110,11 +110,13 @@ public class GalleryAdapter extends RecyclerView.Adapter<GalleryAdapter.ImageVie
                                 // Passer l'URI du fichier dans l'intent
                                 Intent intent = new Intent(context, EnlargedImageActivity.class);
                                 intent.putExtra("imageUri", Uri.fromFile(file));
+                                intent.putExtra("imageName", mediaSite.getTouristicSiteName());
                                 context.startActivity(intent);
                             } else {
                                 File saveFile = saveBitmapToFile(context, imageBitmap, mediaSite.getImageName());
                                 Intent intent = new Intent(context, EnlargedImageActivity.class);
                                 intent.putExtra("imageUri", Uri.fromFile(saveFile));
+                                intent.putExtra("imageName", mediaSite.getTouristicSiteName());
                                 context.startActivity(intent);
                             }
                         }
