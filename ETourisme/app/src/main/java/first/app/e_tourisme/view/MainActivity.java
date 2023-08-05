@@ -44,14 +44,13 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
         Authorization auth = new Authorization();
         if (!auth.verifyToken(MainActivity.this)) {
             Intent intent = new Intent(MainActivity.this, LoginActivity.class);
             startActivity(intent);
         }
-
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
         SharedPreferences preferences = getSharedPreferences(getPackageName() + "_preferences", MODE_PRIVATE);
         notifyLogOut = preferences.getBoolean(PREF_NOTIFY_LOGOUT_KEY, false);
 
