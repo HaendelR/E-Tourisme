@@ -56,7 +56,7 @@ public class LoginActivity extends AppCompatActivity {
      * @param password
      */
     private void loginResult(String username, String password) {
-        this.userController.verifyLogin(username, password, new ResponseCallBack() {
+        this.userController.verifyLogin(username, password,LoginActivity.this, new ResponseCallBack() {
             @Override
             public void onLoginResult(boolean success) {
                 if (success) {

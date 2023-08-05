@@ -1,5 +1,6 @@
 package first.app.e_tourisme.model;
 
+import android.content.Context;
 import android.util.Log;
 
 import com.google.gson.Gson;
@@ -7,6 +8,8 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.loopj.android.http.RequestParams;
 
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.util.Date;
 
 import first.app.e_tourisme.tools.CallWebService;
@@ -175,7 +178,7 @@ public class User {
         });
     }
 
-    public void login(String username, String password, ResponseCallBack callback) {
+    public void login(String username, String password, Context context, ResponseCallBack callback) {
         CallWebService webServiceCall = new CallWebService();
         String url = "/user/login";
 
@@ -194,6 +197,13 @@ public class User {
 
                     if (jsonObject.has("token")) {
                         String token = jsonObject.get("token").getAsString();
+                        try {
+                            FileOutputStream fileOutputStream = context.openFileOutput("token.txt", Context.MODE_PRIVATE);
+                            fileOutputStream.write(token.getBytes());
+                            fileOutputStream.close();
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
                         Log.d("WebService", "Response: " + token);
                         success = true;
                     }

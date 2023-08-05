@@ -16,9 +16,11 @@ import java.util.List;
 import first.app.e_tourisme.R;
 import first.app.e_tourisme.controller.ListeController;
 import first.app.e_tourisme.model.TouristicSite;
+import first.app.e_tourisme.tools.Authorization;
 import first.app.e_tourisme.tools.CustomListAdapter;
 import first.app.e_tourisme.tools.ListeCallBack;
 import first.app.e_tourisme.view.DetailActivity;
+import first.app.e_tourisme.view.LoginActivity;
 
 public class ListFragment extends Fragment {
     private ProgressBar loadingProgressBar;
@@ -46,6 +48,11 @@ public class ListFragment extends Fragment {
     private void initListe(View view) {
         listeTouristic = view.findViewById(R.id.listView);
         loadingProgressBar = view.findViewById(R.id.progressBar);
+        Authorization auth = new Authorization();
+        if (!auth.verifyToken(requireActivity())) {
+            Intent intent = new Intent(requireActivity(), LoginActivity.class);
+            startActivity(intent);
+        }
     }
 
     private void getListTouristiques() {

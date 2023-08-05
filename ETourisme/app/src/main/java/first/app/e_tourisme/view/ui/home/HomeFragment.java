@@ -1,5 +1,6 @@
 package first.app.e_tourisme.view.ui.home;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -16,6 +17,8 @@ import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
 
 import first.app.e_tourisme.R;
+import first.app.e_tourisme.tools.Authorization;
+import first.app.e_tourisme.view.LoginActivity;
 
 public class HomeFragment extends Fragment {
 
@@ -26,6 +29,11 @@ public class HomeFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        Authorization auth = new Authorization();
+        if (!auth.verifyToken(requireActivity())) {
+            Intent intent = new Intent(requireActivity(), LoginActivity.class);
+            startActivity(intent);
+        }
         return inflater.inflate(R.layout.fragment_home, container, false);
     }
 

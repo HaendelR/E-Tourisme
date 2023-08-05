@@ -7,6 +7,7 @@ import android.os.Handler;
 import androidx.appcompat.app.AppCompatActivity;
 
 import first.app.e_tourisme.R;
+import first.app.e_tourisme.tools.Authorization;
 
 public class SplashActivity extends AppCompatActivity {
 
@@ -20,9 +21,17 @@ public class SplashActivity extends AppCompatActivity {
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
-                Intent intent = new Intent(SplashActivity.this, MainActivity.class);
-                startActivity(intent);
-                finish();
+                Authorization auth = new Authorization();
+                if (auth.verifyToken(SplashActivity.this)) {
+                    Intent intent = new Intent(SplashActivity.this, MainActivity.class);
+                    startActivity(intent);
+                    finish();
+                } else {
+                    Intent intent = new Intent(SplashActivity.this, LoginActivity.class);
+                    startActivity(intent);
+                    finish();
+                }
+
             }
         }, SPLASH_DELAY);
     }

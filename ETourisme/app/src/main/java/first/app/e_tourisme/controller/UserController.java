@@ -1,5 +1,7 @@
 package first.app.e_tourisme.controller;
 
+import android.content.Context;
+
 import first.app.e_tourisme.model.User;
 import first.app.e_tourisme.tools.ResponseCallBack;
 import first.app.e_tourisme.tools.SignInCallBack;
@@ -31,9 +33,9 @@ public final class UserController {
      * @param password
      * @return true or false
      */
-    public void verifyLogin(String username, String password, ResponseCallBack callBack) {
+    public void verifyLogin(String username, String password, Context context, ResponseCallBack callBack) {
         User user = new User();
-        user.login(username, password, callBack);
+        user.login(username, password, context, callBack);
     }
 
     public void signInUser(User user, SignInCallBack callBack) {

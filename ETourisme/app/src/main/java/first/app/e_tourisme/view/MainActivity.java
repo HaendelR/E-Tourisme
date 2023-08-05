@@ -4,6 +4,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.MenuItem;
 
 import androidx.annotation.NonNull;
@@ -20,7 +21,10 @@ import androidx.fragment.app.FragmentTransaction;
 
 import com.google.android.material.navigation.NavigationView;
 
+import java.io.File;
+
 import first.app.e_tourisme.R;
+import first.app.e_tourisme.tools.Authorization;
 import first.app.e_tourisme.tools.Notifications;
 import first.app.e_tourisme.view.ui.gallery.GalleryFragment;
 import first.app.e_tourisme.view.ui.home.HomeFragment;
@@ -42,6 +46,11 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        Authorization auth = new Authorization();
+        if (!auth.verifyToken(MainActivity.this)) {
+            Intent intent = new Intent(MainActivity.this, LoginActivity.class);
+            startActivity(intent);
+        }
 
 
         SharedPreferences preferences = getSharedPreferences(getPackageName() + "_preferences", MODE_PRIVATE);
@@ -123,8 +132,19 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void traitLogOut(Boolean notifyLogoutValue) {
-        Intent intent = new Intent(MainActivity.this, LoginActivity.class);
-        startActivity(intent);
+        String filename = "token.txt";
+        File file = new File(getApplicationContext().getFilesDir(), filename);
+        if (file.exists()) {
+            boolean deleted = file.delete();
+            if (deleted) {
+                Intent intent = new Intent(MainActivity.this, LoginActivity.class);
+                startActivity(intent);
+            } else {
+                // Échec de la suppression du fichier
+                Log.d("Suppression", "Échec de déconnexion  ");
+            }
+        }
+
         if (notifyLogoutValue) {
             Notifications.showNotification(MainActivity.this, channel_id, "Statut", "Vous êtes déconnecté", LoginActivity.class);
         }

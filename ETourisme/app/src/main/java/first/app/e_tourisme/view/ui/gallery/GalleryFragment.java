@@ -1,5 +1,6 @@
 package first.app.e_tourisme.view.ui.gallery;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -17,8 +18,10 @@ import java.util.List;
 import first.app.e_tourisme.R;
 import first.app.e_tourisme.controller.MediaSiteController;
 import first.app.e_tourisme.model.MediaSite;
+import first.app.e_tourisme.tools.Authorization;
 import first.app.e_tourisme.tools.GalleryAdapter;
 import first.app.e_tourisme.tools.MediaSiteListener;
+import first.app.e_tourisme.view.LoginActivity;
 
 public class GalleryFragment extends Fragment {
 
@@ -35,6 +38,11 @@ public class GalleryFragment extends Fragment {
         recyclerView = view.findViewById(R.id.recyclerView);
         this.mediaSiteController = MediaSiteController.getInstance();
         loadingProgressBar = view.findViewById(R.id.progressBar);
+        Authorization auth = new Authorization();
+        if (!auth.verifyToken(requireActivity())) {
+            Intent intent = new Intent(requireActivity(), LoginActivity.class);
+            startActivity(intent);
+        }
         setupRecyclerView();
         fetchMediaSites();
         return view;
