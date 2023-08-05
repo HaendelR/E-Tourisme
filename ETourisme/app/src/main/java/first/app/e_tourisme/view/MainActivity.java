@@ -52,7 +52,6 @@ public class MainActivity extends AppCompatActivity {
             startActivity(intent);
         }
 
-
         SharedPreferences preferences = getSharedPreferences(getPackageName() + "_preferences", MODE_PRIVATE);
         notifyLogOut = preferences.getBoolean(PREF_NOTIFY_LOGOUT_KEY, false);
 
@@ -80,31 +79,15 @@ public class MainActivity extends AppCompatActivity {
             int id = item.getItemId();
 
             if (id == R.id.nav_home) {
-                if (!auth.verifyToken(MainActivity.this)) {
-                    Intent intent = new Intent(MainActivity.this, LoginActivity.class);
-                    startActivity(intent);
-                }
                 switchFragment(new HomeFragment());
                 updateDrawerTitle(getString(R.string.menu_home));
             } else if (id == R.id.nav_list) {
-                if (!auth.verifyToken(MainActivity.this)) {
-                    Intent intent = new Intent(MainActivity.this, LoginActivity.class);
-                    startActivity(intent);
-                }
                 updateDrawerTitle(getString(R.string.menu_list_site));
                 switchFragment(new ListFragment());
             } else if (id == R.id.nav_gallery) {
-                if (!auth.verifyToken(MainActivity.this)) {
-                    Intent intent = new Intent(MainActivity.this, LoginActivity.class);
-                    startActivity(intent);
-                }
                 updateDrawerTitle(getString(R.string.menu_galerie));
                 switchFragment(new GalleryFragment());
             } else if (id == R.id.nav_settings) {
-                if (!auth.verifyToken(MainActivity.this)) {
-                    Intent intent = new Intent(MainActivity.this, LoginActivity.class);
-                    startActivity(intent);
-                }
                 switchFragment(new SettingsFragment());
                 updateDrawerTitle(getString(R.string.menu_settings));
             } else if (id == R.id.nav_logOut) {
