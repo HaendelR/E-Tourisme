@@ -1,14 +1,23 @@
 package first.app.e_tourisme.model;
 
+import android.telecom.Call;
+
 import com.google.gson.Gson;
+import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.loopj.android.http.RequestParams;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
+import java.util.Locale;
 
 import first.app.e_tourisme.tools.CallWebService;
 import first.app.e_tourisme.tools.CommentCallBack;
+import first.app.e_tourisme.tools.ListCommentCallBack;
 import first.app.e_tourisme.tools.WebServiceCallback;
 
 public class Commentaire {
@@ -105,5 +114,55 @@ public class Commentaire {
                 callBack.addCommentResult(false);
             }
         });
+    }
+
+    public void getCommentSiteTouristiques(String siteName, ListCommentCallBack callBack) {
+        CallWebService webServiceCall = new CallWebService();
+        String url = "/comment/touristicSiteName";
+
+        RequestParams params = new RequestParams();
+        params.put("touristicSiteName", siteName);
+
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'", Locale.US);
+
+        webServiceCall.responseGet(url, params, new WebServiceCallback() {
+            @Override
+            public void onSuccess(String response) {
+                Gson gson = new Gson();
+                List<Commentaire> listes = new ArrayList<>();
+
+                JsonArray responses = gson.fromJson(response, JsonArray.class);
+                if(responses != null) {
+                    for(JsonElement jsonElement : responses) {
+                        if(jsonElement.isJsonObject()) {
+                            try {
+                                JsonObject jsonObject = jsonElement.getAsJsonObject();
+                                String username = jsonObject.get("userName").getAsString();
+                                String userSurname = jsonObject.get("userSurname").getAsString();
+                                String touristicSiteName = jsonObject.get("touristicSiteName").getAsString();
+                                String content = jsonObject.get("content").getAsString();
+                                Date dateComment = dateFormat.parse(jsonObject.get("dateOfComment").getAsString());
+
+                                Commentaire coms = new Commentaire(username, userSurname, touristicSiteName, content, dateComment);
+                                listes.add(coms);
+                            } catch (ParseException e) {
+                                throw new RuntimeException(e);
+                            }
+                        }
+                    }
+                }
+                callBack.onListCommentResult(listes);
+            }
+
+            @Override
+            public void onFailure(int statusCode) {
+                callBack.onListCommentResult(null);
+            }
+        });
+    }
+
+    @Override
+    public String toString() {
+        return this.userName +" ("+ this.userSurname+")";
     }
 }

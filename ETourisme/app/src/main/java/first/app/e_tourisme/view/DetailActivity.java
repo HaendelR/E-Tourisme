@@ -6,9 +6,12 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.ListView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -23,6 +26,7 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.util.List;
 
 import first.app.e_tourisme.R;
 import first.app.e_tourisme.controller.CommentaireController;
@@ -30,30 +34,36 @@ import first.app.e_tourisme.model.Commentaire;
 import first.app.e_tourisme.model.TouristicSite;
 import first.app.e_tourisme.model.User;
 import first.app.e_tourisme.tools.CommentCallBack;
+import first.app.e_tourisme.tools.CustomCommentAdapter;
+import first.app.e_tourisme.tools.ListCommentCallBack;
 
 
 public class DetailActivity extends AppCompatActivity {
 
-    TextView nomSite;
+    private TextView nomSite;
 
-    ImageView imageSite;
+    private ImageView imageSite;
 
-    TextView placeSite;
+    private TextView placeSite;
 
-    TextView descriptionSite;
+    private TextView descriptionSite;
 
-    EditText commentaire;
+    private EditText commentaire;
 
     private CommentaireController commentaireController;
 
+    private ListView listeCommentaires;
+
+    private ProgressBar loadingPage;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        this.commentaireController = CommentaireController.getInstance();
         setTheme(R.style.details);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_detail);
         initDetail();
         getDetailSite();
-        this.commentaireController = CommentaireController.getInstance();
     }
 
     private void initDetail() {
@@ -61,9 +71,11 @@ public class DetailActivity extends AppCompatActivity {
         imageSite = (ImageView) findViewById(R.id.imageDetail);
         placeSite = (TextView) findViewById(R.id.lieu);
         descriptionSite = (TextView) findViewById(R.id.description);
+        listeCommentaires = (ListView) findViewById(R.id.listeCommentaire);
         getSupportActionBar().setTitle("Détail du site");
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         commentaire = (EditText) findViewById(R.id.contenuCommentaire);
+        loadingPage = findViewById(R.id.progressBar);
         listenBoutonComment();
     }
 
@@ -84,14 +96,39 @@ public class DetailActivity extends AppCompatActivity {
     }
 
     public void getDetailSite() {
+        loadingPage.setVisibility(View.VISIBLE);
         Intent intent = getIntent();
+        TouristicSite site = null;
         if (intent != null && intent.hasExtra("siteTouristique")) {
-            TouristicSite site = intent.getParcelableExtra("siteTouristique");
-            nomSite.setText(site.getName());
-            placeSite.setText(site.getPlace().getEntitled());
-            descriptionSite.setText(site.getDescription());
-            int imageId = this.getMipmapResIdByName("site");
-            imageSite.setImageResource(imageId);
+            site = intent.getParcelableExtra("siteTouristique");
+        }
+
+        final TouristicSite finalSite = site;
+        if(finalSite != null) {
+
+            this.commentaireController.getAllCommentSite(finalSite.getName(), new ListCommentCallBack() {
+                @Override
+                public void onListCommentResult(List<Commentaire> comments) {
+                    Log.d("onListCommentResult", "Number of comments: " + comments.size());
+                    nomSite.setText(finalSite.getName());
+                    placeSite.setText(finalSite.getPlace().getEntitled());
+                    descriptionSite.setText(finalSite.getDescription());
+                    int imageId = getMipmapResIdByName("site");
+                    imageSite.setImageResource(imageId);
+
+                    listeCommentaires.setAdapter(new CustomCommentAdapter(DetailActivity.this, comments));
+
+                    listeCommentaires.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+
+                        @Override
+                        public void onItemClick(AdapterView<?> a, View v, int position, long id) {
+
+                        }
+                    });
+
+                    loadingPage.setVisibility(View.GONE);
+                }
+            });
 
         }
     }

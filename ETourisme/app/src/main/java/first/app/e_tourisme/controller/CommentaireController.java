@@ -2,6 +2,7 @@ package first.app.e_tourisme.controller;
 
 import first.app.e_tourisme.model.Commentaire;
 import first.app.e_tourisme.tools.CommentCallBack;
+import first.app.e_tourisme.tools.ListCommentCallBack;
 
 public class CommentaireController {
 
@@ -19,5 +20,10 @@ public class CommentaireController {
 
     public void addComment(Commentaire comment, CommentCallBack callBack) {
         comment.addComment(comment, callBack);
+    }
+
+    public void getAllCommentSite(String siteName, ListCommentCallBack callBack) {
+        Commentaire c = new Commentaire();
+        c.getCommentSiteTouristiques(siteName, callBack);
     }
 }
