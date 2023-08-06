@@ -132,8 +132,10 @@ public class MainActivity extends AppCompatActivity {
     private void traitLogOut(Boolean notifyLogoutValue) {
         String filename = "token.txt";
         File file = new File(getApplicationContext().getFilesDir(), filename);
-        if (file.exists()) {
-            boolean deleted = file.delete();
+        String filename2 = "user_data.json";
+        File file2 = new File(getApplicationContext().getFilesDir(), filename2);
+        if (file.exists() && file2.exists()) {
+            boolean deleted = file.delete() && file2.delete();
             if (deleted) {
                 Intent intent = new Intent(MainActivity.this, LoginActivity.class);
                 startActivity(intent);
