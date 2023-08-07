@@ -58,10 +58,17 @@ public class HomeFragment extends Fragment {
             byte[] buffer = new byte[size];
             inputStream.read(buffer);
             inputStream.close();
-            return new String(buffer, StandardCharsets.UTF_8);
+
+            String videoPath = "file:///android_asset/utilisation.mp4"; // Chemin vers la vidéo dans le répertoire "assets"
+
+            String htmlContent = new String(buffer, StandardCharsets.UTF_8);
+            htmlContent = htmlContent.replace("{VIDEO_PATH}", videoPath);
+
+            return htmlContent;
         } catch (IOException e) {
             e.printStackTrace();
         }
         return "";
     }
+
 }
