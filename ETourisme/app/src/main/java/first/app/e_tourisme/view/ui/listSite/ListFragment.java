@@ -5,10 +5,13 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 
@@ -35,6 +38,8 @@ public class ListFragment extends Fragment {
     private ListView listeTouristic;
 
     private ListeController listeController;
+    private EditText searchEditText;
+    private CustomListAdapter customListAdapter;
 
     public ListFragment() {
         // Required empty public constructor
@@ -49,12 +54,12 @@ public class ListFragment extends Fragment {
         this.listeController = ListeController.getInstance();
         getListTouristiques();
         return view;
-
     }
 
     private void initListe(View view) {
         listeTouristic = view.findViewById(R.id.listView);
         loadingProgressBar = view.findViewById(R.id.progressBar);
+        searchEditText = view.findViewById(R.id.searchEditText);
         Authorization auth = new Authorization();
         if (!auth.verifyToken(requireActivity())) {
             Intent intent = new Intent(requireActivity(), LoginActivity.class);
@@ -68,7 +73,8 @@ public class ListFragment extends Fragment {
             @Override
             public void onListeResult(List<TouristicSite> sites) {
                 if (isAdded()) {
-                    listeTouristic.setAdapter(new CustomListAdapter(requireActivity(), sites));
+                    customListAdapter = new CustomListAdapter(requireActivity(), sites);
+                    listeTouristic.setAdapter(customListAdapter);
                     listeTouristic.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                         @Override
                         public void onItemClick(AdapterView<?> a, View v, int position, long id) {
@@ -95,13 +101,28 @@ public class ListFragment extends Fragment {
                             }
                         }
                     });
+                    searchEditText.addTextChangedListener(new TextWatcher() {
+                        @Override
+                        public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+                        }
+
+                        @Override
+                        public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                            customListAdapter.filter(charSequence.toString());
+                        }
+
+                        @Override
+                        public void afterTextChanged(Editable editable) {
+
+                        }
+                    });
                     loadingProgressBar.setVisibility(View.GONE);
                 }
             }
         });
     }
-
-    public File getFileByImageName(String imageName) {
+    private File getFileByImageName(String imageName) {
         Context context = getContext();
         File cacheDir = context.getCacheDir();
         if (cacheDir != null) {
@@ -117,7 +138,8 @@ public class ListFragment extends Fragment {
         return null;
     }
 
-    public File saveBitmapToFile(Context context, Bitmap bitmap, String imageName) {
+
+    private File saveBitmapToFile(Context context, Bitmap bitmap, String imageName) {
         try {
             File file = File.createTempFile(imageName, ".jpg", context.getCacheDir());
             FileOutputStream out = new FileOutputStream(file);

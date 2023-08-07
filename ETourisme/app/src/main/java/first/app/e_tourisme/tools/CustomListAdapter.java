@@ -13,6 +13,7 @@ import android.widget.TextView;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 import first.app.e_tourisme.R;
@@ -22,12 +23,16 @@ import first.app.e_tourisme.model.TouristicSite;
 public class CustomListAdapter extends BaseAdapter {
 
     private List<TouristicSite> listeSiteTouristes;
+
+    private List<TouristicSite> touristicSiteFiltered;
+    private List<TouristicSite> init;
     private LayoutInflater layoutInflater;
     private Context context;
 
     public CustomListAdapter(Context context, List<TouristicSite> liste) {
         this.context = context;
-        this.listeSiteTouristes = liste;
+        this.listeSiteTouristes = new ArrayList<>(liste);
+        this.init = liste;
         layoutInflater = LayoutInflater.from(context);
     }
 
@@ -74,6 +79,21 @@ public class CustomListAdapter extends BaseAdapter {
 
         return convertView;
     }
+
+    public void filter(String query) {
+        listeSiteTouristes.clear();
+        if (query.isEmpty()) {
+            listeSiteTouristes.addAll(init);
+        } else {
+            for (TouristicSite site : init) {
+                if (site.getName().toLowerCase().startsWith(query.toLowerCase())) {
+                    listeSiteTouristes.add(site);
+                }
+            }
+        }
+        notifyDataSetChanged();
+    }
+
 
     public int getMipmapResIdByName(String resName) {
         String pkgName = context.getPackageName();
