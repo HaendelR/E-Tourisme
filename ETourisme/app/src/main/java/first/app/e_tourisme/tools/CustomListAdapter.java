@@ -83,7 +83,7 @@ public class CustomListAdapter extends BaseAdapter {
             listeSiteTouristes.addAll(init);
         } else {
             for (TouristicSite site : init) {
-                if (site.getName().toLowerCase().startsWith(query)) {
+                if (site.getName().toLowerCase().startsWith(query.toLowerCase())) {
                     listeSiteTouristes.add(site);
                 }
             }
