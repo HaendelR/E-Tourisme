@@ -1,6 +1,9 @@
 package first.app.e_tourisme.view.ui.listSite;
 
+import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,10 +14,14 @@ import android.widget.ProgressBar;
 
 import androidx.fragment.app.Fragment;
 
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.util.List;
 
 import first.app.e_tourisme.R;
 import first.app.e_tourisme.controller.ListeController;
+import first.app.e_tourisme.model.MediaSite;
 import first.app.e_tourisme.model.TouristicSite;
 import first.app.e_tourisme.tools.Authorization;
 import first.app.e_tourisme.tools.CustomListAdapter;
@@ -68,9 +75,23 @@ public class ListFragment extends Fragment {
                             if (isAdded()) {
                                 Object o = listeTouristic.getItemAtPosition(position);
                                 TouristicSite site = (TouristicSite) o;
-                                Intent intent = new Intent(requireActivity(), DetailActivity.class);
-                                intent.putExtra("siteTouristique", site);
-                                startActivity(intent);
+                                Bitmap imageBitmap = MediaSite.decodeImageData(site.getImageData());
+                                if(imageBitmap != null) {
+                                    File file = getFileByImageName(site.getName());
+                                    if(file != null) {
+                                        Intent intent = new Intent(requireActivity(), DetailActivity.class);
+                                        intent.putExtra("imageUri", Uri.fromFile(file));
+                                        intent.putExtra("siteTouristique", site);
+                                        startActivity(intent);
+                                    } else {
+                                        File saveFile = saveBitmapToFile(getContext(), imageBitmap, site.getName());
+                                        Intent intent = new Intent(requireActivity(), DetailActivity.class);
+                                        intent.putExtra("imageUri", Uri.fromFile(saveFile));
+                                        intent.putExtra("siteTouristique", site);
+                                        startActivity(intent);
+                                    }
+                                }
+
                             }
                         }
                     });
@@ -80,4 +101,33 @@ public class ListFragment extends Fragment {
         });
     }
 
+    public File getFileByImageName(String imageName) {
+        Context context = getContext();
+        File cacheDir = context.getCacheDir();
+        if (cacheDir != null) {
+            File[] files = cacheDir.listFiles();
+            if (files != null) {
+                for (File file : files) {
+                    if (file.getName().equals(imageName)) {
+                        return file;
+                    }
+                }
+            }
+        }
+        return null;
+    }
+
+    public File saveBitmapToFile(Context context, Bitmap bitmap, String imageName) {
+        try {
+            File file = File.createTempFile(imageName, ".jpg", context.getCacheDir());
+            FileOutputStream out = new FileOutputStream(file);
+            bitmap.compress(Bitmap.CompressFormat.JPEG, 100, out);
+            out.flush();
+            out.close();
+            return file;
+        } catch (IOException e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
 }

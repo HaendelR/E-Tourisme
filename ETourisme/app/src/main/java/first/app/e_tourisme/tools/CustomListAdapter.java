@@ -10,6 +10,9 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.util.List;
 
 import first.app.e_tourisme.R;
@@ -79,10 +82,12 @@ public class CustomListAdapter extends BaseAdapter {
         Log.i("CustomListView", "Res Name: " + resName + "==> Res ID = " + resID);
         return resID;
     }
-
     static class ViewHolder {
         ImageView imageView;
         TextView entitledView;
         TextView placeView;
+
     }
 }
+
+

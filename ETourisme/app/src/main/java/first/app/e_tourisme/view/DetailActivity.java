@@ -2,6 +2,7 @@ package first.app.e_tourisme.view;
 
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuItem;
@@ -20,6 +21,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.google.gson.Gson;
 
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -53,6 +55,8 @@ public class DetailActivity extends AppCompatActivity {
     private ListView listeCommentaires;
 
     private ProgressBar loadingPage;
+
+    private File tempFile;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -111,14 +115,15 @@ public class DetailActivity extends AppCompatActivity {
                     nomSite.setText(finalSite.getName());
                     placeSite.setText(finalSite.getPlace().getEntitled());
                     descriptionSite.setText(finalSite.getDescription());
-                    Bitmap imageBitmap = MediaSite.decodeImageData(finalSite.getImageData());
-                    if (imageBitmap != null) {
-                        imageSite.setImageBitmap(imageBitmap);
+
+                    Uri imageUri = getIntent().getParcelableExtra("imageUri");
+                    if (imageUri != null) {
+                        imageSite.setImageURI(imageUri);
+                        tempFile = new File(imageUri.getPath());
                     } else {
                         int imageId = getMipmapResIdByName("site");
                         imageSite.setImageResource(imageId);
                     }
-
 
                     listeCommentaires.setAdapter(new CustomCommentAdapter(DetailActivity.this, comments));
 
@@ -196,5 +201,13 @@ public class DetailActivity extends AppCompatActivity {
 
         return null;
     }
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
 
+        // Supprimer le fichier temporaire lorsque l'activité est détruite
+        if (tempFile != null && tempFile.exists()) {
+            tempFile.delete();
+        }
+    }
 }
