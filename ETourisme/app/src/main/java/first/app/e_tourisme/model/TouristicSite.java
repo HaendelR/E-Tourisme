@@ -13,7 +13,6 @@ import java.util.List;
 
 import first.app.e_tourisme.tools.CallWebService;
 import first.app.e_tourisme.tools.ListeCallBack;
-import first.app.e_tourisme.tools.ResponseCallBack;
 import first.app.e_tourisme.tools.WebServiceCallback;
 
 public class TouristicSite implements Parcelable {
@@ -22,15 +21,25 @@ public class TouristicSite implements Parcelable {
     private String name;
     private String description;
     private Place place;
+    private String imageData;
 
     public TouristicSite() {
     }
 
-    public TouristicSite(String id, String name, String description, Place place) {
+    public TouristicSite(String id, String name, String description, Place place, String imageData) {
         this.id = id;
         this.name = name;
         this.description = description;
         this.place = place;
+        this.imageData = imageData;
+    }
+
+    public String getImageData() {
+        return imageData;
+    }
+
+    public void setImageData(String imageData) {
+        this.imageData = imageData;
     }
 
     public TouristicSite(String name, String description, Place place) {
@@ -72,8 +81,8 @@ public class TouristicSite implements Parcelable {
     }
 
     @Override
-    public String toString()  {
-        return this.name + " " +this.place.getEntitled();
+    public String toString() {
+        return this.name + " " + this.place.getEntitled();
     }
 
     protected TouristicSite(Parcel in) {
@@ -119,19 +128,20 @@ public class TouristicSite implements Parcelable {
                 List<TouristicSite> listes = new ArrayList<>();
 
                 JsonArray reponses = gson.fromJson(response, JsonArray.class);
-                if(reponses != null) {
-                    for(JsonElement jsonElement : reponses) {
-                        if(jsonElement.isJsonObject()) {
+                if (reponses != null) {
+                    for (JsonElement jsonElement : reponses) {
+                        if (jsonElement.isJsonObject()) {
                             JsonObject jsonObject = jsonElement.getAsJsonObject();
                             String id = jsonObject.get("_id").getAsString();
                             String name = jsonObject.get("touristicSiteName").getAsString();
                             String description = jsonObject.get("description").getAsString();
                             JsonObject place = jsonObject.getAsJsonObject("placeName");
                             String placeName = place.get("name").getAsString();
+                            String imageData = jsonObject.get("imageData").getAsString();
 
                             Place placeSite = new Place(placeName);
 
-                            TouristicSite site = new TouristicSite(id, name, description, placeSite);
+                            TouristicSite site = new TouristicSite(id, name, description, placeSite, imageData);
                             listes.add(site);
 
                         }

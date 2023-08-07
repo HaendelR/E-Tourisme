@@ -1,7 +1,7 @@
 package first.app.e_tourisme.view;
 
-import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuItem;
@@ -19,11 +19,8 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.gson.Gson;
 
-import org.w3c.dom.Text;
-
 import java.io.BufferedReader;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.List;
@@ -31,6 +28,7 @@ import java.util.List;
 import first.app.e_tourisme.R;
 import first.app.e_tourisme.controller.CommentaireController;
 import first.app.e_tourisme.model.Commentaire;
+import first.app.e_tourisme.model.MediaSite;
 import first.app.e_tourisme.model.TouristicSite;
 import first.app.e_tourisme.model.User;
 import first.app.e_tourisme.tools.CommentCallBack;
@@ -88,10 +86,10 @@ public class DetailActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    public int getMipmapResIdByName(String resName)  {
+    public int getMipmapResIdByName(String resName) {
         String pkgName = this.getPackageName();
         // Return 0 if not found.
-        int resID = this.getResources().getIdentifier(resName , "mipmap", pkgName);
+        int resID = this.getResources().getIdentifier(resName, "mipmap", pkgName);
         return resID;
     }
 
@@ -104,7 +102,7 @@ public class DetailActivity extends AppCompatActivity {
         }
 
         final TouristicSite finalSite = site;
-        if(finalSite != null) {
+        if (finalSite != null) {
 
             this.commentaireController.getAllCommentSite(finalSite.getName(), new ListCommentCallBack() {
                 @Override
@@ -113,8 +111,14 @@ public class DetailActivity extends AppCompatActivity {
                     nomSite.setText(finalSite.getName());
                     placeSite.setText(finalSite.getPlace().getEntitled());
                     descriptionSite.setText(finalSite.getDescription());
-                    int imageId = getMipmapResIdByName("site");
-                    imageSite.setImageResource(imageId);
+                    Bitmap imageBitmap = MediaSite.decodeImageData(finalSite.getImageData());
+                    if (imageBitmap != null) {
+                        imageSite.setImageBitmap(imageBitmap);
+                    } else {
+                        int imageId = getMipmapResIdByName("site");
+                        imageSite.setImageResource(imageId);
+                    }
+
 
                     listeCommentaires.setAdapter(new CustomCommentAdapter(DetailActivity.this, comments));
 
@@ -137,28 +141,29 @@ public class DetailActivity extends AppCompatActivity {
         this.commentaireController.addComment(comment, new CommentCallBack() {
             @Override
             public void addCommentResult(boolean success) {
-                if(success) {
-                    Toast.makeText(DetailActivity.this,"Commentaire inséré avec succès", Toast.LENGTH_SHORT).show();
+                if (success) {
+                    Toast.makeText(DetailActivity.this, "Commentaire inséré avec succès", Toast.LENGTH_SHORT).show();
                     Intent intent = new Intent(DetailActivity.this, DetailActivity.class);
                     intent.putExtra("siteTouristique", site);
                     startActivity(intent);
                 } else {
-                    Toast.makeText(DetailActivity.this,"Commentaire non inséré", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(DetailActivity.this, "Commentaire non inséré", Toast.LENGTH_SHORT).show();
                 }
             }
         });
     }
+
     public void listenBoutonComment() {
         User userconnecte = readUserFromFile();
         Commentaire com = new Commentaire();
         TouristicSite site = getIntent().getParcelableExtra("siteTouristique");
         ((Button) findViewById(R.id.boutonCommentaire)).setOnClickListener(new Button.OnClickListener() {
             public void onClick(View v) {
-               String contentCommentaire = commentaire.getText().toString();
-               com.setContent(contentCommentaire);
-               com.setUserName(userconnecte.getName());
-               com.setUserSurname(userconnecte.getSurname());
-               com.setTouristicSiteName(site.getName());
+                String contentCommentaire = commentaire.getText().toString();
+                com.setContent(contentCommentaire);
+                com.setUserName(userconnecte.getName());
+                com.setUserSurname(userconnecte.getSurname());
+                com.setTouristicSiteName(site.getName());
 
                 addCommentResult(com, site);
             }
